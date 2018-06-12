@@ -1,5 +1,7 @@
 package cz.kotlingroup.sbdemo.controller
 
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -11,22 +13,13 @@ import javax.persistence.Id
 
 @RestController
 @RequestMapping("/api/kotlin/meetup")
-class KotlinMeetupApiController {
+class KotlinMeetupApiController(val repository: KotlinMeetupRepository) {
 
     @GetMapping
-    fun get(): List<KotlinMeetup> {
-        val today = KotlinMeetup().apply {
-            this.id = 1
-            this.name = "native and spring boot"
-        }
-        return listOf(today)
-    }
+    fun get(): List<KotlinMeetup> = repository.findAll()
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable id: Int): KotlinMeetup? = KotlinMeetup().apply {
-        this.id = id
-        this.name = UUID.randomUUID().toString()
-    }
+    fun getById(@PathVariable id: Int): KotlinMeetup? = repository.findById(id).orElse(null)
 }
 
 @Entity(name = "kotlin_meetup")
@@ -40,3 +33,6 @@ class KotlinMeetup {
     var start: LocalDateTime = LocalDateTime.now()
 
 }
+
+@Repository
+interface KotlinMeetupRepository : JpaRepository<KotlinMeetup, Int>

@@ -7,3 +7,6 @@ create table kotlin_meetup(
 
  start timestamp not null
 );
+
+insert into kotlin_meetup (name, start) values ('First', current_timestamp );
+insert into kotlin_meetup (name, start) values (null, current_timestamp );
