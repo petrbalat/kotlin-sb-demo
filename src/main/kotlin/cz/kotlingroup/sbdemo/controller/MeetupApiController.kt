@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 import java.util.*
+import javax.persistence.Entity
+import javax.persistence.Id
 
 @RestController
 @RequestMapping("/api/kotlin/meetup")
@@ -21,18 +23,20 @@ class KotlinMeetupApiController {
     }
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable id:Int): KotlinMeetup? = KotlinMeetup().apply {
+    fun getById(@PathVariable id: Int): KotlinMeetup? = KotlinMeetup().apply {
         this.id = id
         this.name = UUID.randomUUID().toString()
     }
 }
 
+@Entity(name = "kotlin_meetup")
 class KotlinMeetup {
 
+    @Id
     var id: Int = 0
 
-    lateinit var name: String
+    var name: String? = null
 
-    var date: LocalDateTime = LocalDateTime.now()
+    var start: LocalDateTime = LocalDateTime.now()
 
 }
